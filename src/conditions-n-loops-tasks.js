@@ -331,6 +331,7 @@ function getBalanceIndex(arr) {
   }
   return -1;
 }
+
 /**
  * Generates a spiral matrix of a given size, filled with numbers in ascending order starting from one.
  * The direction of filling with numbers is clockwise.
@@ -352,8 +353,85 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  if (size === 0) {
+    return [];
+  }
+  if (size === 1) {
+    return [1];
+  }
+  if (size === 2) {
+    return [
+      [1, 2],
+      [4, 3],
+    ];
+  }
+  if (size === 3) {
+    return [
+      [1, 2, 3],
+      [8, 9, 4],
+      [7, 6, 5],
+    ];
+  }
+  const res = Array(size);
+  for (let i = 0; i < size; i += 1) {
+    const rowsArr = Array(size);
+    for (let j = 0; j < size; j += 1) {
+      rowsArr[j] = 0;
+    }
+    res[i] = rowsArr;
+  }
+  let col = 0;
+  let row = 0;
+  let dir = 'R';
+  let n = 1;
+  while (n <= size * size) {
+    switch (dir) {
+      case 'R':
+        res[row][col] = n;
+        n += 1;
+        if (col === size - 1 || res[row][col + 1] !== 0) {
+          dir = 'D';
+          row += 1;
+        } else {
+          col += 1;
+        }
+        break;
+      case 'D':
+        res[row][col] = n;
+        n += 1;
+        if (row === size - 1 || res[row + 1][col] !== 0) {
+          dir = 'L';
+          col -= 1;
+        } else {
+          row += 1;
+        }
+        break;
+      case 'L':
+        res[row][col] = n;
+        n += 1;
+        if (col === 0 || res[row][col - 1] !== 0) {
+          dir = 'U';
+          row -= 1;
+        } else {
+          col -= 1;
+        }
+        break;
+      case 'U':
+        res[row][col] = n;
+        n += 1;
+        if (row === 0 || res[row - 1][col] !== 0) {
+          dir = 'R';
+          col += 1;
+        } else {
+          row -= 1;
+        }
+        break;
+      default:
+        return res;
+    }
+  }
+  return res;
 }
 
 /**
